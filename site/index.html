@@ -1,0 +1,845 @@
+<title>Publicomp</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap">
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" href="assets/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="assets/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="assets/site.webmanifest">
+<meta name="msapplication-config" content="assets/browserconfig.xml">
+<meta name="theme-color" content="#07090C">
+
+<style>
+  :root{
+    --ink:#07090C;
+    --graphite:#15181D;
+    --carbon:#24282E;
+    --line:#2a2f38;
+    --red:#E50914;
+    --red-deep:#8B0008;
+    --silver:#D9DEE4;
+    --white:#F5F7FA;
+    --muted:#9aa1ac;
+    --font-display:'Montserrat','Arial Narrow',sans-serif;
+    --font-body:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+    --font-mono:'JetBrains Mono',ui-monospace,'SFMono-Regular',monospace;
+    --maxw:1180px;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--white);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;}
+
+  h1,h2,h3{
+    font-family:var(--font-display);
+    text-transform:uppercase;
+    text-wrap:balance;
+    margin:0;
+    line-height:1.04;
+  }
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--red);
+  }
+  .muted{color:var(--muted);}
+
+  /* chamfered divider between sections, echoes the mark's cut geometry */
+  .chamfer-divider{
+    height:34px;
+    background:var(--ink);
+    position:relative;
+  }
+  .chamfer-divider::before{
+    content:"";
+    position:absolute;inset:0;
+    background:linear-gradient(115deg, transparent 0 calc(50% - 26px), var(--red) calc(50% - 26px) calc(50% - 24px), transparent calc(50% - 24px) 100%);
+    opacity:.6;
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky;top:0;z-index:40;
+    background:rgba(7,9,12,.82);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:var(--maxw);margin:0 auto;padding:14px 24px;
+    display:flex;align-items:center;justify-content:space-between;gap:20px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+  .brand img{height:30px;width:auto;}
+  .brand span{
+    font-family:var(--font-display);font-weight:800;
+    font-size:19px;letter-spacing:.01em;color:var(--white);
+    text-transform:lowercase;
+  }
+  .nav-links{display:flex;gap:30px;list-style:none;margin:0;padding:0;}
+  .nav-links a{
+    font-family:var(--font-mono);font-size:12.5px;font-weight:600;
+    letter-spacing:.08em;text-transform:uppercase;text-decoration:none;
+    color:var(--silver);padding:6px 2px;border-bottom:1px solid transparent;
+    transition:color .2s,border-color .2s;
+  }
+  .nav-links a:hover{color:var(--red);border-color:var(--red);}
+  .nav-cta{
+    font-family:var(--font-mono);font-size:12px;font-weight:600;
+    letter-spacing:.08em;text-transform:uppercase;text-decoration:none;
+    color:var(--white);background:var(--red);
+    padding:10px 18px;
+    clip-path:polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    transition:background .2s;white-space:nowrap;
+  }
+  .nav-cta:hover{background:#ff2233;}
+  .burger{display:none;background:none;border:0;padding:8px;cursor:pointer;}
+  .burger span{display:block;width:22px;height:2px;background:var(--white);margin:5px 0;}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;overflow:hidden;padding:64px 0 56px;}
+  .hero::before{
+    content:"";position:absolute;inset:0;z-index:0;
+    background:
+      radial-gradient(ellipse 640px 420px at 82% 18%, rgba(229,9,20,.16), transparent 60%),
+      linear-gradient(180deg, var(--ink) 0%, var(--graphite) 130%);
+  }
+  .hero-inner{
+    position:relative;z-index:1;
+    display:grid;grid-template-columns:1.08fr .92fr;gap:40px;align-items:center;
+  }
+  .hero-copy .eyebrow{margin-bottom:18px;display:inline-block;border-bottom:1px solid rgba(229,9,20,.4);padding-bottom:6px;}
+  .hero h1{font-size:clamp(34px,4.6vw,58px);font-weight:800;}
+  .hero h1 .verb{display:block;cursor:pointer;transition:color .2s;}
+  .hero h1 .verb:hover{color:var(--red);}
+  .hero h1 .accent{color:var(--red);}
+  .hero-sub{
+    font-size:17px;line-height:1.65;color:var(--silver);
+    max-width:520px;margin:26px 0 0;
+  }
+  .hero-cta-row{display:flex;gap:16px;margin-top:34px;flex-wrap:wrap;}
+  .btn-primary,.btn-ghost{
+    font-family:var(--font-mono);font-size:13px;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;text-decoration:none;
+    padding:16px 28px;display:inline-block;cursor:pointer;
+    clip-path:polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+    transition:background .2s,color .2s,box-shadow .2s;border:none;
+  }
+  .btn-primary{
+    background:var(--red);color:var(--white);
+    box-shadow:0 12px 30px -14px rgba(229,9,20,.7);
+  }
+  .btn-primary:hover{background:#ff2233;}
+  .btn-ghost{background:transparent;color:var(--silver);border:1px solid var(--carbon);}
+  .btn-ghost:hover{border-color:var(--red);color:var(--red);}
+
+  /* 3D hero object */
+  .hero-visual{position:relative;perspective:650px;height:420px;}
+  .p-stage{transition:transform .12s ease-out;}
+  .p-stage{
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    transform-style:preserve-3d;
+  }
+  .p-glow{
+    position:absolute;width:380px;height:380px;border-radius:50%;
+    background:radial-gradient(circle, rgba(229,9,20,.32) 0%, transparent 68%);
+    filter:blur(6px);
+  }
+  .p-mark{
+    position:relative;width:300px;
+    animation:spin-y 16s linear infinite;
+    filter:drop-shadow(0 24px 40px rgba(0,0,0,.55));
+  }
+  @keyframes spin-y{
+    0%{transform:rotateY(-16deg) rotateX(4deg);}
+    50%{transform:rotateY(16deg) rotateX(-2deg);}
+    100%{transform:rotateY(-16deg) rotateX(4deg);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .p-mark{animation:none !important;}
+  }
+  @media (max-width:860px){
+    .hero-inner{grid-template-columns:1fr;}
+    .hero-visual{height:280px;order:-1;}
+    .p-mark{width:210px;}
+  }
+
+  /* orbiting tech-stack icons around the 3D mark */
+  .orbit-ring{
+    --orbit-r:192px;
+    position:absolute;inset:0;
+    animation:spin-ring 46s linear infinite;
+  }
+  .orbit-pos{
+    position:absolute;top:50%;left:50%;
+    transform:rotate(var(--a)) translateX(var(--orbit-r)) rotate(calc(-1 * var(--a)));
+  }
+  .orbit-spin{animation:spin-counter 46s linear infinite;}
+  .orbit-chip{
+    width:44px;height:44px;margin:-22px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--graphite);border:1px solid var(--carbon);border-radius:50%;
+    color:var(--muted);
+    box-shadow:0 8px 18px -10px rgba(0,0,0,.6);
+    transition:color .2s,border-color .2s,transform .2s;
+  }
+  .orbit-chip:hover{color:var(--white);border-color:var(--red);transform:scale(1.14);}
+  .orbit-chip svg{width:20px;height:20px;fill:currentColor;}
+  @keyframes spin-ring{to{transform:rotate(360deg);}}
+  @keyframes spin-counter{to{transform:rotate(-360deg);}}
+  @media (max-width:860px){
+    .orbit-ring{--orbit-r:118px;}
+    .orbit-chip{width:34px;height:34px;margin:-17px;}
+    .orbit-chip svg{width:16px;height:16px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .orbit-ring,.orbit-spin{animation:none !important;}
+  }
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:88px 0;}
+  .section-head{max-width:620px;margin-bottom:56px;}
+  .section-head h2{font-size:clamp(28px,3.6vw,40px);font-weight:800;margin-top:14px;}
+  .section-head p{color:var(--muted);font-size:16px;line-height:1.7;margin:18px 0 0;}
+
+  /* ---------- SERVICIOS ---------- */
+  .layers{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+    border:1px solid var(--carbon);
+  }
+  .layer{
+    background:var(--graphite);
+    padding:34px 28px 30px;
+    border-right:1px solid var(--carbon);
+    position:relative;
+  }
+  .layer:last-child{border-right:none;}
+  .layer::after{
+    content:"";position:absolute;top:0;left:0;right:0;height:3px;
+    background:var(--carbon);
+  }
+  .layer.l1::after{background:var(--silver);}
+  .layer.l2::after{background:var(--red-deep);}
+  .layer.l3::after{background:var(--red);}
+  .layer-num{
+    font-family:var(--font-mono);font-size:12px;color:var(--muted);
+    letter-spacing:.1em;
+  }
+  .layer h3{
+    font-size:22px;margin-top:10px;font-weight:800;
+  }
+  .layer .role{
+    font-family:var(--font-mono);font-size:11.5px;letter-spacing:.06em;
+    color:var(--red);text-transform:uppercase;margin-top:8px;display:block;
+  }
+  .layer p.desc{color:var(--muted);font-size:14.5px;line-height:1.6;margin:14px 0 22px;}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;}
+  .tag{
+    font-family:var(--font-mono);font-size:12px;color:var(--silver);
+    border:1px solid var(--carbon);padding:7px 11px;
+    background:var(--ink);
+  }
+  @media (max-width:860px){
+    .layers{grid-template-columns:1fr;}
+    .layer{border-right:none;border-bottom:1px solid var(--carbon);}
+  }
+
+  /* ---------- SOPORTE TÉCNICO ---------- */
+  .tech-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--carbon);border:1px solid var(--carbon);}
+  .tech-card{background:var(--ink);padding:30px 24px;display:flex;flex-direction:column;gap:14px;}
+  .tech-icon{
+    width:42px;height:42px;border:1px solid var(--carbon);
+    display:flex;align-items:center;justify-content:center;color:var(--red);
+  }
+  .tech-icon svg{width:20px;height:20px;}
+  .tech-card h3{font-size:17px;font-weight:800;}
+  .tech-card p.desc{color:var(--muted);font-size:13.5px;line-height:1.6;margin:0;}
+  .tech-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;}
+  .tech-list li{
+    font-family:var(--font-mono);font-size:12px;color:var(--silver);
+    padding-left:14px;position:relative;
+  }
+  .tech-list li::before{content:"—";position:absolute;left:0;color:var(--red);}
+  @media (max-width:860px){.tech-grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:520px){.tech-grid{grid-template-columns:1fr;}}
+
+  /* ---------- PROCESO ---------- */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;}
+  .step{border-left:2px solid var(--carbon);padding-left:18px;}
+  .step .n{
+    font-family:var(--font-mono);font-size:13px;color:var(--red);
+    font-variant-numeric:tabular-nums;letter-spacing:.06em;
+  }
+  .step h4{font-family:var(--font-display);text-transform:uppercase;font-size:17px;margin:10px 0 8px;font-weight:800;}
+  .step p{color:var(--muted);font-size:14px;line-height:1.6;margin:0;}
+  @media (max-width:860px){.steps{grid-template-columns:1fr 1fr;}}
+  @media (max-width:520px){.steps{grid-template-columns:1fr;}}
+
+  /* ---------- TRAYECTORIA ---------- */
+  .trayectoria{
+    background:var(--graphite);border-top:1px solid var(--carbon);border-bottom:1px solid var(--carbon);
+  }
+  .tray-inner{display:grid;grid-template-columns:.7fr 1.3fr;gap:56px;align-items:center;}
+  .tray-stat{
+    font-family:var(--font-display);font-weight:900;font-variant-numeric:tabular-nums;
+    font-size:clamp(80px,10vw,128px);line-height:.85;color:var(--white);
+  }
+  .tray-stat + p{
+    font-family:var(--font-mono);font-size:13px;color:var(--muted);
+    letter-spacing:.04em;margin:10px 0 0;
+  }
+  .tray-quote{
+    font-family:var(--font-display);font-weight:700;font-size:clamp(20px,2.4vw,27px);
+    text-transform:none;line-height:1.35;color:var(--silver);
+    border-left:2px solid var(--red);padding-left:22px;
+  }
+  .tray-name{margin-top:22px;font-family:var(--font-mono);font-size:13px;color:var(--muted);}
+  .tray-name b{color:var(--white);font-weight:600;}
+  @media (max-width:860px){.tray-inner{grid-template-columns:1fr;gap:32px;}}
+
+  /* ---------- PORTAFOLIO ---------- */
+  .work-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--carbon);border:1px solid var(--carbon);}
+  .work-card{
+    background:var(--ink);padding:34px 30px;
+    display:flex;flex-direction:column;gap:16px;
+    text-decoration:none;color:inherit;
+    position:relative;overflow:hidden;
+    transition:background .25s;
+  }
+  .work-card:hover{background:var(--graphite);}
+  .work-card::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--carbon);
+  }
+  .work-card.w1::before{background:var(--silver);}
+  .work-card.w2::before{background:var(--red);}
+  .work-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;}
+  .work-rubro{
+    font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);
+  }
+  .work-arrow{
+    font-family:var(--font-mono);font-size:13px;color:var(--red);
+    opacity:0;transform:translateX(-4px);transition:opacity .2s,transform .2s;
+  }
+  .work-card:hover .work-arrow{opacity:1;transform:translateX(0);}
+  .work-card h3{font-size:24px;font-weight:800;}
+  .work-card .loc{
+    font-family:var(--font-mono);font-size:12.5px;color:var(--muted);margin-top:-8px;
+  }
+  .work-card p.desc{color:var(--silver);font-size:14.5px;line-height:1.65;margin:0;}
+  .work-stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto;padding-top:6px;}
+  .work-stat{
+    font-family:var(--font-mono);font-size:11.5px;color:var(--white);
+    border:1px solid var(--carbon);padding:6px 10px;background:var(--graphite);
+  }
+  @media (max-width:860px){.work-grid{grid-template-columns:1fr;}}
+
+  /* ---------- CONTACTO ---------- */
+  .contact-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;}
+  form{display:flex;flex-direction:column;gap:16px;}
+  .field{display:flex;flex-direction:column;gap:7px;}
+  .field label{
+    font-family:var(--font-mono);font-size:11.5px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--muted);
+  }
+  .field input,.field select,.field textarea{
+    background:var(--graphite);border:1px solid var(--carbon);color:var(--white);
+    font-family:var(--font-body);font-size:15px;padding:12px 14px;
+    border-radius:0;outline:none;transition:border-color .2s;
+  }
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--red);}
+  .field textarea{resize:vertical;min-height:96px;}
+  .row-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media (max-width:520px){.row-2{grid-template-columns:1fr;}}
+  .submit-btn{
+    align-self:flex-start;margin-top:6px;
+  }
+  .contact-side{
+    background:var(--graphite);border:1px solid var(--carbon);padding:30px 26px;
+    display:flex;flex-direction:column;gap:22px;height:fit-content;
+  }
+  .contact-item{display:flex;gap:14px;align-items:flex-start;}
+  .contact-item svg{flex:none;margin-top:2px;color:var(--red);}
+  .contact-item .label{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
+  .contact-item .value{font-size:15px;color:var(--white);margin-top:3px;}
+  @media (max-width:860px){.contact-grid{grid-template-columns:1fr;}}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--carbon);padding:40px 0 34px;}
+  .footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;}
+  .footer-tag{font-family:var(--font-mono);font-size:12px;color:var(--muted);letter-spacing:.04em;}
+  .footer-legal{font-family:var(--font-mono);font-size:11.5px;color:var(--carbon);margin-top:6px;}
+  .footer-legal b{color:var(--muted);font-weight:500;}
+
+  @media (max-width:900px){
+    .nav-links,.nav-cta{display:none;}
+    .burger{display:block;}
+    .nav-inner.menu-open{flex-wrap:wrap;}
+    .nav-inner.menu-open .nav-links,.nav-inner.menu-open .nav-cta{display:flex;}
+    .nav-inner.menu-open .nav-links{flex-direction:column;gap:18px;}
+  }
+
+  /* ---------- WHATSAPP FLOTANTE ---------- */
+  .wa-float{
+    position:fixed;right:22px;bottom:22px;z-index:50;
+    display:flex;align-items:center;gap:12px;
+  }
+  .wa-tip{
+    font-family:var(--font-mono);font-size:12.5px;letter-spacing:.03em;
+    color:var(--white);background:var(--graphite);border:1px solid var(--carbon);
+    padding:9px 14px;white-space:nowrap;
+    opacity:0;transform:translateX(6px);
+    transition:opacity .2s,transform .2s;
+    pointer-events:none;
+  }
+  .wa-float:hover .wa-tip{opacity:1;transform:translateX(0);}
+  .wa-btn{
+    position:relative;width:58px;height:58px;flex:none;
+    background:var(--red);border:1px solid var(--red-deep);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 14px 30px -12px rgba(229,9,20,.65);
+    transition:background .2s,transform .2s;
+  }
+  .wa-btn:hover{background:#ff2233;transform:scale(1.06);}
+  .wa-btn svg{width:27px;height:27px;fill:var(--white);}
+  .wa-ring{
+    position:absolute;inset:0;border-radius:50%;
+    border:1px solid var(--red);
+    animation:wa-pulse 2.6s ease-out infinite;
+  }
+  @keyframes wa-pulse{
+    0%{transform:scale(1);opacity:.55;}
+    100%{transform:scale(1.55);opacity:0;}
+  }
+  @media (prefers-reduced-motion: reduce){.wa-ring{animation:none;}}
+  @media (max-width:520px){
+    .wa-float{right:16px;bottom:16px;}
+    .wa-btn{width:52px;height:52px;}
+    .wa-tip{display:none;}
+  }
+
+  /* reveal on scroll — from a visible resting state, not opacity:0 */
+  .reveal{opacity:1;transform:none;transition:opacity .5s ease, transform .5s ease;}
+  .reveal.pre{opacity:.001;transform:translateY(14px);}
+
+  /* staggered cascade for repeated items within a grid */
+  .layers>.reveal:nth-child(1),.tech-grid>.reveal:nth-child(1),.steps>.reveal:nth-child(1),.work-grid>.reveal:nth-child(1),.tray-inner>.reveal:nth-child(1){transition-delay:.04s;}
+  .layers>.reveal:nth-child(2),.tech-grid>.reveal:nth-child(2),.steps>.reveal:nth-child(2),.work-grid>.reveal:nth-child(2),.tray-inner>.reveal:nth-child(2){transition-delay:.14s;}
+  .layers>.reveal:nth-child(3),.tech-grid>.reveal:nth-child(3),.steps>.reveal:nth-child(3){transition-delay:.24s;}
+  .tech-grid>.reveal:nth-child(4),.steps>.reveal:nth-child(4){transition-delay:.34s;}
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal.pre{opacity:1;transform:none;}
+  }
+</style>
+
+<nav>
+  <div class="nav-inner">
+    <a class="brand" href="#top">
+      <img src="assets/publicomp-icon.png" alt="Publicomp">
+      <span>publicomp</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#proceso">Proceso</a></li>
+      <li><a href="#trayectoria">Trayectoria</a></li>
+      <li><a href="#portafolio">Portafolio</a></li>
+      <li><a href="#soporte-tecnico">Soporte técnico</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <a class="nav-cta" href="#contacto">Escribinos</a>
+    <button class="burger" aria-label="Abrir menú" id="burgerBtn"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div id="top"></div>
+
+<header class="hero">
+  <div class="wrap hero-inner">
+    <div class="hero-copy">
+      <span class="eyebrow">Publicidad y Diseño Computarizado</span>
+      <h1>
+        <span class="verb" onclick="document.getElementById('servicios').scrollIntoView({behavior:'smooth'})">Diseñamos</span>
+        <span class="verb" onclick="document.getElementById('servicios').scrollIntoView({behavior:'smooth'})">Construimos</span>
+        <span class="verb accent" onclick="document.getElementById('servicios').scrollIntoView({behavior:'smooth'})">Automatizamos</span>
+      </h1>
+      <p class="hero-sub">Veinte años de trayectoria, de Venezuela a Argentina. Un solo interlocutor para todo el recorrido — de la identidad de marca al sistema que hace funcionar tu negocio.</p>
+      <div class="hero-cta-row">
+        <a class="btn-primary" href="#contacto">Empezar un proyecto</a>
+        <a class="btn-ghost" href="#servicios">Ver servicios</a>
+      </div>
+    </div>
+    <div class="hero-visual" id="heroVisual">
+      <div class="p-stage" id="pStage">
+        <div class="p-glow"></div>
+        <img class="p-mark" src="assets/publicomp-icon.png" alt="Símbolo Publicomp">
+      </div>
+      <div class="orbit-ring">
+        <div class="orbit-pos" style="--a:-90deg">
+          <div class="orbit-spin"><div class="orbit-chip" title="Vercel">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Vercel</title><path d="m12 1.608 12 20.784H0Z"/></svg>
+          </div></div>
+        </div>
+        <div class="orbit-pos" style="--a:-30deg">
+          <div class="orbit-spin"><div class="orbit-chip" title="Supabase">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Supabase</title><path d="M11.9 1.036c-.015-.986-1.26-1.41-1.874-.637L.764 12.05C-.33 13.427.65 15.455 2.409 15.455h9.579l.113 7.51c.014.985 1.259 1.408 1.873.636l9.262-11.653c1.093-1.375.113-3.403-1.645-3.403h-9.642z"/></svg>
+          </div></div>
+        </div>
+        <div class="orbit-pos" style="--a:30deg">
+          <div class="orbit-spin"><div class="orbit-chip" title="Visual Studio Code">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Visual Studio Code</title><path d="M23.15 2.587L18.21.21a1.494 1.494 0 0 0-1.705.29l-9.46 8.63-4.12-3.128a.999.999 0 0 0-1.276.057L.327 7.261A1 1 0 0 0 .326 8.74L3.899 12 .326 15.26a1 1 0 0 0 .001 1.479L1.65 17.94a.999.999 0 0 0 1.276.057l4.12-3.128 9.46 8.63a1.492 1.492 0 0 0 1.704.29l4.942-2.377A1.5 1.5 0 0 0 24 20.06V3.939a1.5 1.5 0 0 0-.85-1.352zm-5.146 14.861L10.826 12l7.178-5.448v10.896z"/></svg>
+          </div></div>
+        </div>
+        <div class="orbit-pos" style="--a:90deg">
+          <div class="orbit-spin"><div class="orbit-chip" title="CSS3">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>CSS3</title><path d="M1.5 0h21l-1.91 21.563L11.977 24l-8.565-2.438L1.5 0zm17.09 4.413L5.41 4.41l.213 2.622 10.125.002-.255 2.716h-6.64l.24 2.573h6.182l-.366 3.523-2.91.804-2.956-.81-.188-2.11h-2.61l.29 3.855L12 19.288l5.373-1.53L18.59 4.414z"/></svg>
+          </div></div>
+        </div>
+        <div class="orbit-pos" style="--a:150deg">
+          <div class="orbit-spin"><div class="orbit-chip" title="Java">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Java</title><path d="M8.851 18.56s-.917.534.653.714c1.902.218 2.874.187 4.969-.211 0 0 .552.346 1.321.646-4.699 2.013-10.633-.118-6.943-1.149M8.276 15.933s-1.028.761.542.924c2.032.209 3.636.227 6.413-.308 0 0 .384.389.987.602-5.679 1.661-12.007.13-7.942-1.218M13.116 11.475c1.158 1.333-.304 2.533-.304 2.533s2.939-1.518 1.589-3.418c-1.261-1.772-2.228-2.652 3.007-5.688 0-.001-8.216 2.051-4.292 6.573M19.33 20.504s.679.559-.747.991c-2.712.822-11.288 1.069-13.669.033-.856-.373.75-.89 1.254-.998.527-.114.828-.093.828-.093-.953-.671-6.156 1.317-2.643 1.887 9.58 1.553 17.462-.7 14.977-1.82M9.292 13.21s-4.362 1.036-1.544 1.412c1.189.159 3.561.123 5.77-.062 1.806-.152 3.618-.477 3.618-.477s-.637.272-1.098.587c-4.429 1.165-12.986.623-10.522-.568 2.082-1.006 3.776-.892 3.776-.892M17.116 17.584c4.503-2.34 2.421-4.589.968-4.285-.355.074-.515.138-.515.138s.132-.207.385-.297c2.875-1.011 5.086 2.981-.928 4.562 0-.001.07-.062.09-.118M14.401 0s2.494 2.494-2.365 6.33c-3.896 3.077-.888 4.832-.001 6.836-2.274-2.053-3.943-3.858-2.824-5.539 1.644-2.469 6.197-3.665 5.19-7.627M9.734 23.924c4.322.277 10.959-.153 11.116-2.198 0 0-.302.775-3.572 1.391-3.688.694-8.239.613-10.937.168 0-.001.553.457 3.393.639"/></svg>
+          </div></div>
+        </div>
+        <div class="orbit-pos" style="--a:210deg">
+          <div class="orbit-spin"><div class="orbit-chip" title="Node.js">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Node.js</title><path d="M11.998,24c-0.321,0-0.641-0.084-0.922-0.247l-2.936-1.737c-0.438-0.245-0.224-0.332-0.08-0.383 c0.585-0.203,0.703-0.25,1.328-0.604c0.065-0.037,0.151-0.023,0.218,0.017l2.256,1.339c0.082,0.045,0.197,0.045,0.272,0l8.795-5.076 c0.082-0.047,0.134-0.141,0.134-0.238V6.921c0-0.099-0.053-0.192-0.137-0.242l-8.791-5.072c-0.081-0.047-0.189-0.047-0.271,0 L3.075,6.68C2.99,6.729,2.936,6.825,2.936,6.921v10.15c0,0.097,0.054,0.189,0.139,0.235l2.409,1.392 c1.307,0.654,2.108-0.116,2.108-0.89V7.787c0-0.142,0.114-0.253,0.256-0.253h1.115c0.139,0,0.255,0.112,0.255,0.253v10.021 c0,1.745-0.95,2.745-2.604,2.745c-0.508,0-0.909,0-2.026-0.551L2.28,18.675c-0.57-0.329-0.922-0.945-0.922-1.604V6.921 c0-0.659,0.353-1.275,0.922-1.603l8.795-5.082c0.557-0.315,1.296-0.315,1.848,0l8.794,5.082c0.57,0.329,0.924,0.944,0.924,1.603 v10.15c0,0.659-0.354,1.273-0.924,1.604l-8.794,5.078C12.643,23.916,12.324,24,11.998,24z M19.099,13.993 c0-1.9-1.284-2.406-3.987-2.763c-2.731-0.361-3.009-0.548-3.009-1.187c0-0.528,0.235-1.233,2.258-1.233 c1.807,0,2.473,0.389,2.747,1.607c0.024,0.115,0.129,0.199,0.247,0.199h1.141c0.071,0,0.138-0.031,0.186-0.081 c0.048-0.054,0.074-0.123,0.067-0.196c-0.177-2.098-1.571-3.076-4.388-3.076c-2.508,0-4.004,1.058-4.004,2.833 c0,1.925,1.488,2.457,3.895,2.695c2.88,0.282,3.103,0.703,3.103,1.269c0,0.983-0.789,1.402-2.642,1.402 c-2.327,0-2.839-0.584-3.011-1.742c-0.02-0.124-0.126-0.215-0.253-0.215h-1.137c-0.141,0-0.254,0.112-0.254,0.253 c0,1.482,0.806,3.248,4.655,3.248C17.501,17.007,19.099,15.91,19.099,13.993z"/></svg>
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="chamfer-divider"></div>
+
+<section id="servicios">
+  <div class="wrap">
+    <div class="section-head reveal pre">
+      <span class="eyebrow">Arquitectura de servicios</span>
+      <h2>Tres capas. Un solo responsable.</h2>
+      <p>Nada de listas planas de nueve servicios sueltos. Cada capa tiene un rol distinto en tu crecimiento, y las tres las resuelve la misma persona — sin traspasos ni pérdida de contexto.</p>
+    </div>
+    <div class="layers">
+      <div class="layer l1 reveal pre">
+        <span class="layer-num">01</span>
+        <h3>Marca</h3>
+        <span class="role">Puerta de entrada</span>
+        <p class="desc">Identidad visual y piezas gráficas que construyen confianza desde el primer contacto.</p>
+        <div class="tags">
+          <span class="tag">Identidad visual</span>
+          <span class="tag">Diseño gráfico</span>
+          <span class="tag">Papelería</span>
+        </div>
+      </div>
+      <div class="layer l2 reveal pre">
+        <span class="layer-num">02</span>
+        <h3>Presencia</h3>
+        <span class="role">Núcleo del negocio</span>
+        <p class="desc">Donde el mercado te busca activamente. Sitios y tiendas construidos para convertir.</p>
+        <div class="tags">
+          <span class="tag">Web — Diseño y Desarrollo</span>
+          <span class="tag">E-Commerce</span>
+        </div>
+      </div>
+      <div class="layer l3 reveal pre">
+        <span class="layer-num">03</span>
+        <h3>Automatización</h3>
+        <span class="role">Retención y recurrencia</span>
+        <p class="desc">Los sistemas que hacen que tu operación funcione sola, todos los días.</p>
+        <div class="tags">
+          <span class="tag">Sistemas de venta y facturación (POS)</span>
+          <span class="tag">CRM</span>
+          <span class="tag">ERP</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="proceso">
+  <div class="wrap">
+    <div class="section-head reveal pre">
+      <span class="eyebrow">Cómo trabajamos</span>
+      <h2>Proceso explícito, sin sorpresas.</h2>
+      <p>Etapas, tiempos y entregables a la vista desde el primer día. Así se desarma el miedo a quedar en el aire.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal pre">
+        <span class="n">01 — Diagnóstico</span>
+        <h4>Escuchar</h4>
+        <p>Relevamos el problema real, no el que se supone que tenés. Definimos capa y alcance.</p>
+      </div>
+      <div class="step reveal pre">
+        <span class="n">02 — Propuesta</span>
+        <h4>Encuadrar</h4>
+        <p>Plazos, entregables y responsable único. Sin letra chica.</p>
+      </div>
+      <div class="step reveal pre">
+        <span class="n">03 — Ejecución</span>
+        <h4>Construir</h4>
+        <p>Avances visibles en cada etapa, con espacio para ajustar sobre la marcha.</p>
+      </div>
+      <div class="step reveal pre">
+        <span class="n">04 — Entrega</span>
+        <h4>Sostener</h4>
+        <p>Entrega, capacitación y soporte — el proyecto no termina el día que se publica.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="trayectoria" class="trayectoria">
+  <div class="wrap tray-inner">
+    <div class="reveal pre">
+      <div class="tray-stat">20</div>
+      <p>años de operación real, no un emprendimiento reciente</p>
+    </div>
+    <div class="reveal pre">
+      <p class="tray-quote">"No es una marca nueva — es una trayectoria que se traslada y se moderniza. La misma persona diseña, construye y programa: nadie se pasa la pelota."</p>
+      <p class="tray-name">Fundador y Director Creativo, Publicomp</p>
+    </div>
+  </div>
+</section>
+
+<section id="portafolio">
+  <div class="wrap">
+    <div class="section-head reveal pre">
+      <span class="eyebrow">Trabajo real</span>
+      <h2>Proyectos en producción, hoy.</h2>
+      <p>Dos casos en Olavarría y la región — el mercado prioritario. Ambos en línea y operando, no mockups.</p>
+    </div>
+    <div class="work-grid">
+      <a class="work-card w1 reveal pre" href="https://www.helensofia.com/" target="_blank" rel="noopener">
+        <div class="work-top">
+          <span class="work-rubro">E-commerce — Muebles y electrodomésticos</span>
+          <span class="work-arrow">Ver sitio →</span>
+        </div>
+        <h3>Helen Sofia</h3>
+        <span class="loc">Tandil, Olavarría, Río Cuarto y Junín</span>
+        <p class="desc">Catálogo online con más de 200 productos, venta guiada por WhatsApp y coordinación de entregas a domicilio en cuatro ciudades.</p>
+        <div class="work-stats">
+          <span class="work-stat">+200 productos</span>
+          <span class="work-stat">4 ciudades con entrega</span>
+        </div>
+      </a>
+      <a class="work-card w2 reveal pre" href="https://www.tubazardelorenabocca.com.ar/" target="_blank" rel="noopener">
+        <div class="work-top">
+          <span class="work-rubro">E-commerce — Bazar y artículos para el hogar</span>
+          <span class="work-arrow">Ver sitio →</span>
+        </div>
+        <h3>Tu Bazar de Lorena Bocca</h3>
+        <span class="loc">Olavarría</span>
+        <p class="desc">Catálogo organizado por categorías con pedido y confirmación por WhatsApp, retiro en local o entrega coordinada.</p>
+        <div class="work-stats">
+          <span class="work-stat">275 artículos</span>
+          <span class="work-stat">6 categorías</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="soporte-tecnico" style="background:var(--graphite);border-top:1px solid var(--carbon);border-bottom:1px solid var(--carbon);">
+  <div class="wrap">
+    <div class="section-head reveal pre">
+      <span class="eyebrow">Un equipo propio</span>
+      <h2>Soporte técnico, en persona.</h2>
+      <p>Aparte de los sistemas, tenemos técnicos que se ocupan de lo físico: el equipo que tenés hoy en el escritorio, no solo el software que corre arriba.</p>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-card reveal pre">
+        <div class="tech-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="13" rx="1"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <h3>Software</h3>
+        <p class="desc">Actualización y puesta a punto del sistema.</p>
+        <ul class="tech-list">
+          <li>Windows</li>
+          <li>Office</li>
+          <li>Instalación de programas</li>
+        </ul>
+      </div>
+      <div class="tech-card reveal pre">
+        <div class="tech-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="12" rx="1"/><path d="M2 19h20l-1.5-4h-17Z"/></svg>
+        </div>
+        <h3>Reparación de notebooks</h3>
+        <p class="desc">Cambio de partes y limpieza interna.</p>
+        <ul class="tech-list">
+          <li>Pantallas</li>
+          <li>Teclados</li>
+          <li>Touchpad</li>
+          <li>Limpieza interna</li>
+        </ul>
+      </div>
+      <div class="tech-card reveal pre">
+        <div class="tech-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="1"/><path d="M9 7h6M9 11h6M9 15h3"/></svg>
+        </div>
+        <h3>Upgrade de hardware</h3>
+        <p class="desc">Más rendimiento en el equipo que ya tenés.</p>
+        <ul class="tech-list">
+          <li>Memoria RAM</li>
+          <li>Discos SSD / HDD</li>
+        </ul>
+      </div>
+      <div class="tech-card reveal pre">
+        <div class="tech-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="7" height="18" rx="1"/><circle cx="7.5" cy="18" r=".6" fill="currentColor" stroke="none"/><path d="M14 8h6M14 12h6M14 16h4"/></svg>
+        </div>
+        <h3>Ensamblaje y venta</h3>
+        <p class="desc">Equipos armados a pedido, a tu medida.</p>
+        <ul class="tech-list">
+          <li>Ensamblaje a pedido</li>
+          <li>Venta de equipos</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contacto">
+  <div class="wrap">
+    <div class="section-head reveal pre">
+      <span class="eyebrow">Empecemos</span>
+      <h2>Contanos qué necesitás resolver.</h2>
+      <p>Sin precios fijos en la web porque el trabajo es a medida — pero contános el contexto y te respondemos con algo concreto, no una lista de precios genérica.</p>
+    </div>
+    <div class="contact-grid reveal pre">
+      <form onsubmit="event.preventDefault(); this.querySelector('.submit-btn').textContent='Enviado ✓';">
+        <div class="row-2">
+          <div class="field">
+            <label for="f-nombre">Nombre</label>
+            <input id="f-nombre" type="text" required placeholder="Tu nombre">
+          </div>
+          <div class="field">
+            <label for="f-email">Email</label>
+            <input id="f-email" type="email" required placeholder="vos@empresa.com">
+          </div>
+        </div>
+        <div class="row-2">
+          <div class="field">
+            <label for="f-capa">Capa de interés</label>
+            <select id="f-capa">
+              <option>Marca — identidad y diseño</option>
+              <option>Presencia — web o e-commerce</option>
+              <option>Automatización — sistemas y CRM</option>
+              <option>No estoy seguro todavía</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-plazo">Plazo estimado</label>
+            <select id="f-plazo">
+              <option>Lo antes posible</option>
+              <option>1 – 2 meses</option>
+              <option>3 – 6 meses</option>
+              <option>Sin apuro, estoy explorando</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-presupuesto">Rango de presupuesto</label>
+          <select id="f-presupuesto">
+            <option>Acotado</option>
+            <option>Moderado</option>
+            <option>Robusto</option>
+            <option>Prefiero conversarlo en la consulta</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-desc">Contanos brevemente tu proyecto</label>
+          <textarea id="f-desc" placeholder="¿Qué tenés hoy y qué te falta?"></textarea>
+        </div>
+        <button class="btn-primary submit-btn" type="submit" style="border:none;">Enviar consulta</button>
+      </form>
+
+      <aside class="contact-side">
+        <div class="contact-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5a2 2 0 0 1 2-2h3.28a1 1 0 0 1 .95.68l1.5 4.5a1 1 0 0 1-.27 1.05L8.5 11.2a11 11 0 0 0 4.3 4.3l1.97-1.96a1 1 0 0 1 1.05-.27l4.5 1.5a1 1 0 0 1 .68.95V19a2 2 0 0 1-2 2h-1C10.5 21 3 13.5 3 6V5Z"/></svg>
+          <div><div class="label">WhatsApp</div><div class="value">2284306203</div></div>
+        </div>
+        <div class="contact-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+          <div><div class="label">Dirección</div><div class="value">Rivadavia 2644, 2B — Olavarría</div></div>
+        </div>
+        <div class="contact-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 8h18M8 4v4"/></svg>
+          <div><div class="label">Atención</div><div class="value">Remota — Argentina y LATAM</div></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div>
+      <div class="footer-tag">Diseñamos, construimos y automatizamos.</div>
+      <div class="footer-legal">© 2026 Publicomp — <b>Publicidad y Diseño Computarizado</b></div>
+    </div>
+    <a class="brand" href="#top" style="opacity:.8;">
+      <img src="assets/publicomp-icon.png" alt="Publicomp" style="height:24px;">
+    </a>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/5492284306203" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp">
+  <span class="wa-tip">Escribinos por WhatsApp</span>
+  <span class="wa-btn">
+    <span class="wa-ring"></span>
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>WhatsApp</title><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+  </span>
+</a>
+
+<script>
+  // burger menu — class-based, only has effect inside the mobile media query,
+  // so resizing back to desktop can never leave it visually "stuck" open.
+  const burger = document.getElementById('burgerBtn');
+  const navInner = document.querySelector('.nav-inner');
+  burger.addEventListener('click', () => {
+    navInner.classList.toggle('menu-open');
+  });
+  document.querySelectorAll('.nav-links a').forEach(a=>{
+    a.addEventListener('click', () => navInner.classList.remove('menu-open'));
+  });
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 900) navInner.classList.remove('menu-open');
+  });
+
+  // subtle pointer parallax on hero 3D stage
+  const stage = document.getElementById('pStage');
+  const visual = document.getElementById('heroVisual');
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && visual) {
+    visual.addEventListener('mousemove', (e) => {
+      const r = visual.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      stage.style.transform = `rotateY(${px*46}deg) rotateX(${-py*38}deg)`;
+    });
+    visual.addEventListener('mouseleave', () => { stage.style.transform = ''; });
+  }
+
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting){ en.target.classList.remove('pre'); io.unobserve(en.target); }
+    });
+  }, {threshold:.15});
+  revealEls.forEach(el=>io.observe(el));
+</script>
